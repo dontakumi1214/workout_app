@@ -49,18 +49,26 @@ class TweetsController < ApplicationController
   end
 
   # DELETE /tweets/1 or /tweets/1.json
-  def destroy
-    @tweet.destroy
-    respond_to do |format|
-      format.html { redirect_to tweets_url, notice: "Tweet was successfully destroyed." }
-      format.json { head :no_content }
-    end
+  #def destroy
+    #@tweet.destroy
+    #respond_to do |format|
+      #format.html { redirect_to tweets_url, notice: "Tweet was successfully destroyed." }
+      #format.json { head :no_content }
+    #end
+  #end
+
+def destroy
+ tweet = Tweet.find(params[:id])
+  if tweet.user_id == current_user.id
+   tweet.destroy #destroyメソッドを使用し対象のツイートを削除する。
   end
+end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tweet
-      @tweet = Tweet.find(params[:id])
+     @tweet = current_user.tweets.find_by(id: params[:id])
+     redirect_to(tweets_url, alert: "ERROR!!") if @tweet.blank?
     end
 
     # Only allow a list of trusted parameters through.
