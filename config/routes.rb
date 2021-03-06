@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :posts
  resources :tweets do
      member do
        get "sort"
